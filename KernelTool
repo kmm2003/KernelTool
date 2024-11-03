@@ -1,0 +1,74 @@
+#! /bin/bash
+
+function pause(){
+	read -s -n 1 -p "Press any key to continue . . ."
+	echo ""
+}
+
+if [ $# -eq 0 ] ; then
+    echo "Usage: $0 <option> [file_name]"
+    echo ""
+    echo "Options:"
+    echo "  -ext <file_name>           Extracts the specified compressed file into the rootfs directory."
+    echo "  -mer -gz -cpio             Compiles exp.c, adds it to rootfs, and creates a compressed rootfs.cpio.gz archive."
+    echo "  -mer -cpio                 Compiles exp.c, adds it to rootfs, and creates a rootfs.cpio archive."
+    echo "  -gdb                       Configures GDB for kernel debugging and sets up remote debugging on localhost:1234."
+    echo "  -ext -vmlinux              Extracts bzImage to vmlinux using the extract-vmlinux script."
+    echo ""
+    echo "Examples:"
+    echo "  $0 -ext file.cpio.gz"
+    echo "  $0 -mer -gz -cpio"
+    echo "  $0 -mer -cpio"
+    echo "  $0 -gdb"
+    echo "  $0 -ext -vmlinux"
+	exit 1
+else
+	if [ $1 = "-ext" ] ; then
+		rm -rf rootfs
+		mkdir rootfs
+		filetype=$(file -b $2)
+		cp $2 ./rootfs
+		cd rootfs
+		if [[ "$filetype" == *"gzip compressed data"* ]]; then
+			gunzip $2
+			cpio -idm < $2
+			rm $2
+		fi
+		exit 0
+	fi
+
+	if [ $1 = "-mer" ] && [ $2 = "-gz" ] && [ $3 = "-cpio" ]; then
+		gcc -o exp -static exp.c
+		mv ./exp ./rootfs
+		cd ./rootfs
+		find . -print0 | cpio --null -ov --format=newc | gzip -9 > ../rootfs.cpio.gz
+	fi
+
+	if [ $1 = "-mer" ] && [ $2 = "-cpio" ]; then
+		gcc -o exp -static exp.c
+		mv ./exp ./rootfs
+		cd ./rootfs
+		find . -print0 | cpio --null -ov --format=newc > ../rootfs.cpio
+	fi
+
+	if [ $1 = "-gdb" ] ; then
+		gdb \
+			-ex "add-auto-load-safe-path $(pwd)" \
+			-ex "file vmlinux" \
+			-ex 'set arch i386:x86-64:intel' \
+			-ex "target remote localhost:1234" \
+			-ex 'break start_kernel' \
+			-ex 'continue' \
+			-ex 'disconnect' \
+			-ex 'set arch i386:x86-64' \
+			-ex 'target remote localhost:1234' \
+		exit 0
+	fi
+
+	if [ $1 = "-ext" ] && [ $2 = "-vmlinux" ] ; then
+		if [ ! -f extract-vmlinux ]; then
+			wget https://raw.githubusercontent.com/torvalds/linux/master/scripts/extract-vmlinux
+		fi
+		./extract-vmlinux bzImage > ./vmlinux 
+	fi
+fi
