@@ -43,24 +43,21 @@
 
 ## Functionality Overview
 
-1. **pause()**  
-   - Pauses execution and waits for the user to press any key.
-
-2. **Filesystem Extraction (`-ext <file_name>`)**  
+1. **Filesystem Extraction (`-ext <file_name>`)**  
    - Deletes and recreates `rootfs` directory.
    - Copies the specified file to `rootfs` and decompresses if it’s gzip-compressed.
    - Extracts the archive using `cpio`.
 
-3. **Root Filesystem Archiving (`-mer -gz -cpio` and `-mer -cpio`)**  
+2. **Root Filesystem Archiving (`-mer -gz -cpio` and `-mer -cpio`)**  
    - Compiles `exp.c` into a static binary.
    - Moves the compiled binary to `rootfs`.
    - Creates a `.cpio` or `.cpio.gz` archive for the `rootfs` directory.
 
-4. **Kernel Debugging Setup (`-gdb`)**  
+3. **Kernel Debugging Setup (`-gdb`)**  
    - Sets up GDB for kernel debugging.
    - Configures the architecture and attaches to a remote session.
    - Sets breakpoints and continues execution.
 
-5. **Kernel Image Extraction (`-ext -vmlinux`)**  
+4. **Kernel Image Extraction (`-ext -vmlinux`)**  
    - Downloads the `extract-vmlinux` script if not available.
    - Extracts `bzImage` to produce a `vmlinux` file for debugging.
