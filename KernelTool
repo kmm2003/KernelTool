@@ -23,6 +23,14 @@ if [ $# -eq 0 ] ; then
     echo "  $0 -ext -vmlinux"
 	exit 1
 else
+	if [ $1 = "-ext" ] && [ $2 = "-vmlinux" ] ; then
+		if [ ! -f extract-vmlinux ]; then
+			wget https://raw.githubusercontent.com/torvalds/linux/master/scripts/extract-vmlinux
+		fi
+		./extract-vmlinux bzImage > ./vmlinux 
+		exit 0
+	fi
+
 	if [ $1 = "-ext" ] ; then
 		rm -rf rootfs
 		mkdir rootfs
@@ -42,6 +50,7 @@ else
 		mv ./exp ./rootfs
 		cd ./rootfs
 		find . -print0 | cpio --null -ov --format=newc | gzip -9 > ../rootfs.cpio.gz
+		exit 0
 	fi
 
 	if [ $1 = "-mer" ] && [ $2 = "-cpio" ]; then
@@ -49,6 +58,7 @@ else
 		mv ./exp ./rootfs
 		cd ./rootfs
 		find . -print0 | cpio --null -ov --format=newc > ../rootfs.cpio
+		exit 0
 	fi
 
 	if [ $1 = "-gdb" ] ; then
@@ -63,12 +73,5 @@ else
 			-ex 'set arch i386:x86-64' \
 			-ex 'target remote localhost:1234' \
 		exit 0
-	fi
-
-	if [ $1 = "-ext" ] && [ $2 = "-vmlinux" ] ; then
-		if [ ! -f extract-vmlinux ]; then
-			wget https://raw.githubusercontent.com/torvalds/linux/master/scripts/extract-vmlinux
-		fi
-		./extract-vmlinux bzImage > ./vmlinux 
 	fi
 fi
