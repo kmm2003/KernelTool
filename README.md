@@ -26,10 +26,10 @@
 ### Options
 
 - `-ext <file_name>`: Extracts the specified compressed file (e.g., gzip) into the `rootfs` directory.
+- `-ext -vmlinux`: Extracts `bzImage` to `vmlinux` using the `extract-vmlinux` script.
 - `-mer -cpio`: Compiles `exp.c`, adds it to `rootfs`, and creates a `rootfs.cpio` archive.
 - `-mer -gz -cpio`: Compiles `exp.c` into a static binary, adds it to `rootfs`, and creates a compressed archive `rootfs.cpio.gz`.
 - `-gdb`: Configures GDB for kernel debugging, sets the architecture, and connects to a remote session on `localhost:1234`.
-- `-ext -vmlinux`: Extracts `bzImage` to `vmlinux` using the `extract-vmlinux` script.
 
 ### Examples
 
