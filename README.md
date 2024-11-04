@@ -27,17 +27,17 @@
 
 - `-ext <file_name>`: Extracts the specified compressed file (e.g., gzip) into the `rootfs` directory.
 - `-ext -vmlinux`: Extracts `bzImage` to `vmlinux` using the `extract-vmlinux` script.
-- `-mer -cpio`: Compiles `exp.c`, adds it to `rootfs`, and creates a `rootfs.cpio` archive.
-- `-mer -gz -cpio`: Compiles `exp.c` into a static binary, adds it to `rootfs`, and creates a compressed archive `rootfs.cpio.gz`.
+- `-mer -cpio <file_name>`: Compiles `exp.c`, adds it to `rootfs`, and creates a `rootfs.cpio` archive.
+- `-mer -gz -cpio <file_name>`: Compiles `exp.c` into a static binary, adds it to `rootfs`, and creates a compressed archive `rootfs.cpio.gz`.
 - `-gdb`: Configures GDB for kernel debugging, sets the architecture, and connects to a remote session on `localhost:1234`.
 
 ### Examples
 
 ```bash
-./KernelTool.sh -ext file.cpio.gz
+./KernelTool.sh -ext rootfs.cpio.gz
 ./KernelTool.sh -ext -vmlinux
-./KernelTool.sh -mer -cpio
-./KernelTool.sh -mer -cpio -gz 
+./KernelTool.sh -mer -cpio rootfs.cpio
+./KernelTool.sh -mer -cpio -gz rootfs.cpio.gz
 ./KernelTool.sh -gdb
 ```
 
@@ -52,7 +52,7 @@
    - Downloads the `extract-vmlinux` script if not available.
    - Extracts `bzImage` to produce a `vmlinux` file for debugging.
 
-3. **Root Filesystem Archiving (`-mer -cpio` and `-mer -cpio -gz`)**  
+3. **Root Filesystem Archiving (`-mer -cpio <file_name>` and `-mer -cpio -gz <file_name>`)**  
    - Compiles `exp.c` into a static binary.
    - Moves the compiled binary to `rootfs`.
    - Creates a `.cpio` or `.cpio.gz` archive for the `rootfs` directory.
