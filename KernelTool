@@ -9,17 +9,17 @@ if [ $# -eq 0 ] ; then
     echo "Usage: $0 <option> [file_name]"
     echo ""
     echo "Options:"
-    echo "  -ext <file_name>           Extracts the specified compressed file into the rootfs directory."
-	echo "  -ext -vmlinux              Extracts bzImage to vmlinux using the extract-vmlinux script."
-	echo "  -mer -cpio                 Compiles exp.c, adds it to rootfs, and creates a rootfs.cpio archive."
-    echo "  -mer -cpio -gz             Compiles exp.c, adds it to rootfs, and creates a compressed rootfs.cpio.gz archive."
-    echo "  -gdb                       Configures GDB for kernel debugging and sets up remote debugging on localhost:1234."
+    echo "  -ext <file_name>           	Extracts the specified compressed file into the rootfs directory."
+	echo "  -ext -vmlinux              	Extracts bzImage to vmlinux using the extract-vmlinux script."
+	echo "  -mer -cpio <file_name>     	Compiles exp.c, adds it to rootfs, and creates a rootfs.cpio archive."
+    echo "  -mer -cpio -gz <file_name> 	Compiles exp.c, adds it to rootfs, and creates a compressed rootfs.cpio.gz archive."
+    echo "  -gdb                       	Configures GDB for kernel debugging and sets up remote debugging on localhost:1234."
     echo ""
     echo "Examples:"
-    echo "  $0 -ext file.cpio.gz"
+    echo "  $0 -ext rootfs.cpio.gz"
 	echo "  $0 -ext -vmlinux"
-    echo "  $0 -mer -cpio"
-    echo "  $0 -mer -cpio -gz"
+    echo "  $0 -mer -cpio rootfs.cpio"
+    echo "  $0 -mer -cpio -gz rootfs.cpio.gz"
     echo "  $0 -gdb"
 	exit 1
 else
@@ -51,9 +51,10 @@ else
 		mv ./exp ./rootfs
 		cd ./rootfs
 		if [ $3 = "-gz" ]; then
-			find . -print0 | cpio --null -ov --format=newc | gzip -9 > ../rootfs.cpio.gz
+			find . -print0 | cpio --null -ov --format=newc | gzip -9 > ../$4
+			exit 0
 		fi
-		find . -print0 | cpio --null -ov --format=newc > ../rootfs.cpio
+		find . -print0 | cpio --null -ov --format=newc > ../$3
 		exit 0
 	fi
 
