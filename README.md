@@ -29,7 +29,7 @@
 - `-ext -vmlinux`: Extracts `bzImage` to `vmlinux` using the `extract-vmlinux` script.
 - `-mer -cpio <file_name>`: Compiles `exp.c`, adds it to `rootfs`, and creates a `rootfs.cpio` archive.
 - `-mer -gz -cpio <file_name>`: Compiles `exp.c` into a static binary, adds it to `rootfs`, and creates a compressed archive `rootfs.cpio.gz`.
-- `-gdb`: Configures GDB for kernel debugging, sets the architecture, and connects to a remote session on `localhost:1234`.
+- `-gdb <symbol_file> <address>`: Configures GDB for kernel debugging, sets up remote debugging on `localhost:1234`, and adds a `symbol file` with the specified `load address`.
 
 ### Examples
 
@@ -38,7 +38,7 @@
 ./KernelTool.sh -ext -vmlinux
 ./KernelTool.sh -mer -cpio rootfs.cpio
 ./KernelTool.sh -mer -cpio -gz rootfs.cpio.gz
-./KernelTool.sh -gdb
+./KernelTool.sh -gdb vmlinux.sym 0x1000000
 ```
 
 ## Functionality Overview
@@ -57,9 +57,7 @@
    - Moves the compiled binary to `rootfs`.
    - Creates a `.cpio` or `.cpio.gz` archive for the `rootfs` directory.
 
-4. **Kernel Debugging Setup (`-gdb`)**  
+4. **Kernel Debugging Setup (`-gdb <symbol_file> <address>`)**  
    - Sets up GDB for kernel debugging.
    - Configures the architecture and attaches to a remote session.
    - Sets breakpoints and continues execution.
-
-
