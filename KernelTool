@@ -6,21 +6,21 @@ function pause(){
 }
 
 if [ $# -eq 0 ] ; then
-    echo "Usage: $0 <option> [file_name]"
+    echo "Usage: $0 <option> [file_name] [address]"
     echo ""
     echo "Options:"
     echo "  -ext <file_name>           	Extracts the specified compressed file into the rootfs directory."
 	echo "  -ext -vmlinux              	Extracts bzImage to vmlinux using the extract-vmlinux script."
 	echo "  -mer -cpio <file_name>     	Compiles exp.c, adds it to rootfs, and creates a rootfs.cpio archive."
     echo "  -mer -cpio -gz <file_name> 	Compiles exp.c, adds it to rootfs, and creates a compressed rootfs.cpio.gz archive."
-    echo "  -gdb                       	Configures GDB for kernel debugging and sets up remote debugging on localhost:1234."
+    echo "  -gdb <symbol_file> <address>	Configures GDB for kernel debugging, sets up remote debugging on localhost:1234, and adds a symbol file with the specified load address."
     echo ""
     echo "Examples:"
     echo "  $0 -ext rootfs.cpio.gz"
 	echo "  $0 -ext -vmlinux"
     echo "  $0 -mer -cpio rootfs.cpio"
     echo "  $0 -mer -cpio -gz rootfs.cpio.gz"
-    echo "  $0 -gdb"
+    echo "  $0 -gdb vmlinux.sym 0xffffffffc0000000"
 	exit 1
 else
 	if [ $1 = "-ext" ] && [ $2 = "-vmlinux" ] ; then
@@ -69,6 +69,7 @@ else
 			-ex 'disconnect' \
 			-ex 'set arch i386:x86-64' \
 			-ex 'target remote localhost:1234' \
+			-ex "add-symbol-file $2 $3" \
 		exit 0
 	fi
 fi
