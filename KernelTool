@@ -40,9 +40,13 @@ else
 		cd rootfs
 		if [[ "$filetype" == *"gzip compressed data"* ]]; then
 			gunzip $2
+			cpio_file="${2%.gz}"
+			cpio -idm < "$cpio_file"
+			rm "$cpio_file"
+		else
+			cpio -idm < $2
+			rm $2
 		fi
-		cpio -idm < $2
-		rm $2
 		exit 0
 	fi
 
