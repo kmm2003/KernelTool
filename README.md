@@ -38,7 +38,7 @@
 ./KernelTool.sh -ext -vmlinux
 ./KernelTool.sh -mer -cpio rootfs.cpio
 ./KernelTool.sh -mer -cpio -gz rootfs.cpio.gz
-./KernelTool.sh -gdb vmlinux.sym 0x1000000
+./KernelTool.sh -gdb vmlinux 0x1000000
 ```
 
 ## Functionality Overview
