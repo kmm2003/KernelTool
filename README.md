@@ -17,10 +17,15 @@
 - `cpio`, `gzip`, `gunzip` - for filesystem extraction and archiving.
 - `wget` - for downloading `extract-vmlinux` if it is not already available.
 
+## Download
+```bash
+curl https://raw.githubusercontent.com/kmm2003/KernelTool/refs/heads/main/KernelTool -o KernelTool && chmod +x KernelTool
+```
+
 ## Usage
 
 ```bash
-./KernelTool.sh <option> [file_name]
+./KernelTool <option> [file_name]
 ```
 
 ### Options
@@ -34,11 +39,11 @@
 ### Examples
 
 ```bash
-./KernelTool.sh -ext rootfs.cpio.gz
-./KernelTool.sh -ext -vmlinux
-./KernelTool.sh -mer -cpio rootfs.cpio
-./KernelTool.sh -mer -cpio -gz rootfs.cpio.gz
-./KernelTool.sh -gdb vmlinux 0x1000000
+./KernelTool -ext rootfs.cpio.gz
+./KernelTool -ext -vmlinux
+./KernelTool -mer -cpio rootfs.cpio
+./KernelTool -mer -cpio -gz rootfs.cpio.gz
+./KernelTool -gdb vmlinux 0x1000000
 ```
 
 ## Functionality Overview
