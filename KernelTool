@@ -20,7 +20,7 @@ if [ $# -eq 0 ] ; then
 	echo "  $0 -ext -vmlinux"
     echo "  $0 -mer -cpio rootfs.cpio"
     echo "  $0 -mer -cpio -gz rootfs.cpio.gz"
-    echo "  $0 -gdb vmlinux.sym 0xffffffffc0000000"
+    echo "  $0 -gdb vmlinux 0xffffffffc0000000"
 	exit 1
 else
 	if [ $1 = "-ext" ] && [ $2 = "-vmlinux" ] ; then
